@@ -4,9 +4,40 @@ const FULL_HEART = '♥'
 
 // Your JavaScript code goes here!
 
-
-
-
+//hides Starter Error
+const modal = document.querySelector('#modal')
+modal.className = "hidden"
+//the event listener
+const likeImgs = document.querySelectorAll("footer span")
+likeImgs.forEach((img) => {
+  console.log("img", img)
+  img.addEventListener('click', likePost)
+})
+//using mimicServerCall to make server request
+function likePost(event) {
+  let heart = event.target.innerText
+  mimicServerCall()
+  .then(response => {
+    console.log("heart", heart)
+  //changes the color of the heart when clicked on
+    if(heart === FULL_HEART) {
+      event.target.innerText = EMPTY_HEART
+      event.target.className = ""
+    } else {
+      event.target.innerText = FULL_HEART
+      event.target.className = "activated-heart"
+  }}
+  )
+  //blocks error when clicking on heart
+  .catch((error)=> {
+    console.log(error)
+    modal.className = ""
+    modal.innerText = `${error}`
+    setTimeout(() => {
+      modal.className = "hidden"
+    }, 1000);
+  })
+}
 //------------------------------------------------------------------------------
 // Don't change the code below: this function mocks the server response
 //------------------------------------------------------------------------------
